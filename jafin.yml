@@ -1,0 +1,1068 @@
+openapi: 3.0.2
+info:
+  title: Budget User Contact API
+  description: Budget User Contact API specification
+  version: '1.0'
+servers:
+  - url: https://jafin-dev.nil.rs
+paths:
+  /api/registry/budget-user-contacts/{id}:
+    get:
+      description: Retrieves a single budget user contact for the specified ID
+      operationId: retrieve-single-get
+      parameters:
+        - description: Budget user contact ID for which to retrieve the contact.
+          in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/retrieve-single-get-response"
+                type: object
+          description: Gets contact
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/error"
+          description: Bad Request
+        "401":
+          description: Unauthorized
+        "403":
+          description: Forbidden - insufficient permissions to process the request.
+        "422":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/validation-error"
+          description: Unprocessable Entity - a request validation error.
+        "500":
+          description: Internal server error
+      security:
+        - bearer_auth: []
+      summary: Gets a single contact
+      tags:
+        - single-contact
+  /api/registry/budget-user-contacts:
+    get:
+      description: Retrieves filtered Budget User contacts
+      operationId: retrieve-filtered-get
+      parameters:
+        - description: Select query parameter, contains a list of entity fields to be returned
+          in: query
+          name: select
+          example: select=id,name,description
+          required: false
+          schema:
+            type: string
+        - description: Paging query parameter, used for filtering the results
+          in: query
+          name: paging=(sort(orderId.asc),limit.100,count.true)
+          required: false
+          schema:
+            type: string
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: "#/components/schemas/retrieve-filtered-get-response"
+                type: object
+          description: Gets a filtered list of contacts
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/error"
+          description: Bad Request
+        "401":
+          description: Unauthorized
+        "403":
+          description: Forbidden - insufficient permissions to process the request.
+        "422":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/validation-error"
+          description: Unprocessable Entity - a request validation error.
+        "500":
+          description: Internal server error
+      security:
+        - bearer_auth: []
+      summary: Retrieves filtered contacts
+      tags:
+        - filtered-contacts
+    post:
+      description: Create budget user contact
+      operationId: register-budget-user-contacts-post
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/contact-request-post"
+              type: object
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: "#/components/schemas/register-budget-user-contacts-post-response"
+                type: object
+          description: Creates contacts
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/error"
+          description: Bad Request
+        "401":
+          description: Unauthorized
+        "403":
+          description: Forbidden - insufficient permissions to process the request.
+        "422":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/validation-error"
+          description: Unprocessable Entity - a request validation error.
+        "500":
+          description: Internal server error
+      security:
+        - bearer_auth: []
+      summary: Creates contacts
+      tags:
+        - contacts-post
+    put:
+      description: Update budget user contact
+      operationId: update-budget-user-contacts-put
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/contact-request-post"
+              type: object
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: "#/components/schemas/update-budget-user-contacts-put-response"
+                type: object
+          description: Updates contacts
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/error"
+          description: Bad Request
+        "401":
+          description: Unauthorized
+        "403":
+          description: Forbidden - insufficient permissions to process the request.
+        "422":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/validation-error"
+          description: Unprocessable Entity - a request validation error.
+        "500":
+          description: Internal server error
+      security:
+        - bearer_auth: []
+      summary: Updates contacts
+      tags:
+        - contacts-put
+  /api/registry/budget-user-contacts/history:
+    get:
+      description: Retrieves paged budget user contact history
+      operationId: retrieve-paged-history-get
+      parameters:
+        - description: Select query parameter, contains a list of entity fields to be returned
+          in: query
+          name: select
+          example: select=id,name,description
+          required: false
+          schema:
+            type: string
+        - description: Paging query parameter, used for filtering the results
+          in: query
+          name: paging=(sort(orderId.asc),limit.100,count.true)
+          required: false
+          schema:
+            type: string
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: "#/components/schemas/retrieve-paged-history-get-response"
+                type: object
+          description: Gets contacts history
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/error"
+          description: Bad Request
+        "401":
+          description: Unauthorized
+        "403":
+          description: Forbidden - insufficient permissions to process the request.
+        "422":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/validation-error"
+          description: Unprocessable Entity - a request validation error.
+        "500":
+          description: Internal server error
+      summary: Gets paged contacts history
+      tags:
+        - contacts-history
+  /api/registry/budget-user-contacts/{id}/history/compare/reference/{referenceVersionId}/difference/{differenceVersionId}:
+    get:
+      description: Retrieves budget user contact differences between two versions
+      operationId: retrieve-compared-history-get
+      parameters:
+        - description: Budget user contact ID.
+          in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+        - description: Budget user contact reference version id.
+          in: path
+          name: referenceVersionId
+          required: true
+          schema:
+            type: integer
+        - description: Budget user contact difference reference version id.
+          in: path
+          name: differenceVersionId
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: "#/components/schemas/retrieve-compared-history-get-response"
+                type: object
+          description: Compares contact versions
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/error"
+          description: Bad Request
+        "401":
+          description: Unauthorized
+        "403":
+          description: Forbidden - insufficient permissions to process the request.
+        "422":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/validation-error"
+          description: Unprocessable Entity - a request validation error.
+        "500":
+          description: Internal server error
+      security:
+        - bearer_auth: []
+      summary: Gets a difference between two different versions of the same contact entity
+      tags:
+        - contacts-difference
+  /api/registry/budget-user-contacts/history-last-revision/from/{fromVersionId}/to/{toVersionId}:
+    get:
+      description: Retrieves paged budget user contact last revision history given from and to version ids
+      operationId: retrieve-paged-last-revision-history-get
+      parameters:
+        - description: Budget user contact version id from
+          in: path
+          name: fromVersionId
+          required: true
+          schema:
+            type: integer
+        - description: Budget user contact version id to
+          in: path
+          name: toVersionId
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: "#/components/schemas/retrieve-paged-last-revision-history-get-response"
+                type: object
+          description: Gets specific versions of contact
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/error"
+          description: Bad Request
+        "401":
+          description: Unauthorized
+        "403":
+          description: Forbidden - insufficient permissions to process the request.
+        "422":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/validation-error"
+          description: Unprocessable Entity - a request validation error.
+        "500":
+          description: Internal server error
+      summary: Gets contacts revision history
+      tags:
+        - contacts-history-revision
+  /api/registry/budget-user-contacts/versions:
+    get:
+      description: RetrievePagedVersionsGet
+      operationId: retrieve-paged-versions-get
+      parameters:
+        - description: Select query parameter, contains a list of entity fields to be returned
+          in: query
+          name: select
+          example: select=id,name,description
+          required: false
+          schema:
+            type: string
+        - description: Paging query parameter, used for filtering the results
+          in: query
+          name: paging=(sort(orderId.asc),limit.100,count.true)
+          required: false
+          schema:
+            type: string
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: "#/components/schemas/retrieve-paged-versions-get-response"
+                type: object
+          description: Gets contact versions information
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/error"
+          description: Bad Request
+        "401":
+          description: Unauthorized
+        "403":
+          description: Forbidden - insufficient permissions to process the request.
+        "422":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/validation-error"
+          description: Unprocessable Entity - a request validation error.
+        "500":
+          description: Internal server error
+      summary: Gets paged contact version
+      tags:
+        - contacts-versions
+components:
+  schemas:
+    contact-response-filters-meta:
+      additionalProperties: false
+      properties:
+        activeFilter:
+          description: Represents value of the filter that request executes against
+          example: paging=(sort(modifiedDate.desc,id.asc),limit.50,count.false)
+          type: string
+        tableKey:
+          description: Indicates primary key of the entity
+          example: Id
+          type: string
+        hash:
+          description: Represents retrived data hash
+          example: CA9938C4
+          type: string
+      type: object
+    contact-response-version:
+      additionalProperties: false
+      properties:
+        id:
+          description: Version ID
+          example: 1
+          type: integer
+        modifiedDate:
+          description: Timestamp representing the date and time of last modification of the contact.
+          example: 2023-08-28T13:41:32.606871
+          type: string
+          format: date-time
+        modifiedUserId:
+          description: ID of the user that modified contact.
+          example: 1
+          type: integer
+        modifiedUserName:
+          description: Name of the user that modified contact.
+          example: Super Administrator
+          type: string
+        modifiedUserLogin:
+          description: Username of the user that modified contact.
+          example: super_admin
+          type: string
+        modifiedType:
+          description: Type of modification.
+          example: 1
+          enum:
+            - 1 - Create
+            - 2 - Update
+            - 3 - Delete
+            - 4 - Deactivate
+            - 5 - Activate
+            - 6 - Import
+          type: string
+        modifiedComment:
+          description: Version change comment.
+          nullable: true
+          example: Budget user contact deactivation
+          type: string
+      type: object
+    contact-response-status:
+      additionalProperties: false
+      properties:
+        message:
+          description: Status message
+          nullable: true
+          type: string
+        code:
+          description: Status code
+          example: Success
+          type: string
+        type:
+          description: Status code type
+          example: 0
+          nullable: true
+          enum:
+            - 0 - Success
+            - 1 - ProcessedError
+            - 2 - FluentValidation
+            - 3 - DatabaseError
+            - 4 - UnknownError
+            - 5 - TransactionError
+            - 6 - TransactionUnknownError
+          type: string
+      type: object
+    contact-response-additional-information:
+      additionalProperties: false
+      properties:
+        filters_meta:
+          additionalProperties: false
+          nullable: true
+          $ref: "#/components/schemas/contact-response-filters-meta"
+        lastVersion:
+          additionalProperties: false
+          nullable: true
+          $ref: "#/components/schemas/contact-response-version"
+      type: object
+    contact-response-diff:
+      additionalProperties: false
+      items:
+        properties:
+          property:
+            description: Name of the property for which value the difference is found
+            example: Name
+            type: string
+          reference:
+            description: Value of the referenced property.
+            example: John
+            type: object
+          difference:
+            description: Value of the difference.
+            example: Bill
+            type: object
+      type: array
+    contact-response-payload-single:
+      additionalProperties: false
+      properties:
+        createdDate:
+          description: Timestamp representing the date and time of creation of the contact.
+          example: 2023-08-28T13:41:32.606871
+          type: string
+          format: date-time
+        createdUserId:
+          description: Id of the user that created contact.
+          example: 1
+          type: integer
+        createdUserName:
+          description: Name of the user that created contact.
+          example: Super Administrator
+          type: string
+        createdUserLogin:
+          description: Username of the user that created contact.
+          example: super_admin
+          type: string
+        modifiedDate:
+          description: Timestamp representing the date and time of last modification of the contact.
+          nullable: true
+          example: 2023-08-28T13:41:32.606871
+          type: string
+        modifiedUserId:
+          description: ID of the user that modified contact.
+          nullable: true
+          example: 1
+          type: integer
+        modifiedUserName:
+          description: Name of the user that modified contact.
+          nullable: true
+          example: Super Administrator
+          type: string
+        modifiedUserLogin:
+          description: Username of the user that modified contact.
+          nullable: true
+          example: super_admin
+          type: string
+        budgetUserId:
+          description: Budget User ID
+          example: 00001
+          type: string
+        budgetUserRequestId:
+          description: Budget User request ID
+          example: 1
+          type: integer
+        type:
+          description: Budget user contact type
+          example: 1
+          type: integer
+          enum:
+            - 1 (Registration)
+            - 2 (OrganizationalUnit)
+            - 3 (ResponsiblePerson)
+            - 4 (VerificationAdministrator)
+            - 5 (BankAccountAdministrator)
+            - 6 (Person)
+            - 7 (Organization)
+        name:
+          description: Name of the budget user contact
+          example: John Doe
+          type: string
+        identification:
+          additionalProperties: false
+          properties:
+            type:
+              description: Type of the identification document
+              example: MB deo
+              type: string
+              enum:
+                - MB (CompanyNumber)
+                - PIB (TaxIdNumber)
+                - JBKJS (BudgetUserId)
+                - LK (IdentificationNumber)
+                - JMBG (UniqueIdentificationNumber)
+                - Pasoš (PassportNumber)
+                - Drugo (Other)
+                - MB deo (CompanyNumberPart)
+            value:
+              description: Value of the identification document
+              example: "29857184"
+              type: string
+          type: object
+        place:
+          description: Budget user contact place of residence
+          example: Belgrade
+          type: string
+        postalNumber:
+          description: Budget user contact residence postal number
+          example: 11070
+          type: integer
+        street:
+          description: Budget user contact residence address
+          example: Belgrade street 1
+          type: string
+        website:
+          description: List of budget user contact websites
+          items:
+            properties:
+              value:
+                description: The value of the contact website.
+                type: string
+          example: "['www.test.com', 'www.anothertest.com']"
+          type: array
+        email:
+          description: List of budget user contact emails
+          items:
+            properties:
+              value:
+                description: The value of the contact website.
+                type: string
+          example: "['testcontact@jafin.rs', 'anothertestcontact@jafin.rs']"
+          type: array
+        phoneNumber:
+          description: List of budget user contact phone numbers
+          items:
+            properties:
+              value:
+                description: The value of the contact phone number.
+                type: string
+          example: "[123456789, 987654321]"
+          type: array
+        comment:
+          description: Budget user contact comment
+          nullable: true
+          example: important budget user contact
+          type: string
+        verifiedUserId:
+          description: ID of the user which verified budget user contact
+          nullable: true
+          example: 1
+          type: integer
+        verifiedDate:
+          description: Timestamp of the budget user contact verification
+          nullable: true
+          example: 2023-08-28T13:41:32.606871
+          type: string
+          format: date-time
+        data:
+          description: Budget User contact historical data
+          nullable: true
+          type: object
+        activity:
+          description: Flag indicating budget user contact status
+          enum:
+            - 0 (Active)
+            - 3 (TemporarilyInactive)
+            - 9 (Inactive)
+          example: 0
+          type: integer
+        id:
+          description: Budget User contact ID
+          example: 1
+          type: integer
+        versionId:
+          description: Budget User contact version history ID
+          example: 1
+          type: integer
+        extraData:
+          description: Internal system management object
+          nullable: true
+          type: string
+      type: object
+    contact-response-payload-collection:
+      additionalProperties: false
+      properties:
+        data:
+          additionalProperties: false
+          items:
+            $ref: "#/components/schemas/contact-response-payload-single"
+          type: array
+        totalRows:
+          description: Optional field representing number of records returned in the payload
+          example: 200
+          nullable: true
+          type: integer
+      type: object
+    contact-response-payload-history:
+      additionalProperties: false
+      properties:
+        reference:
+          additionalProperties: false
+          items:
+            $ref: "#/components/schemas/contact-response-payload-single"
+          type: array
+        difference:
+          additionalProperties: false
+          items:
+            $ref: "#/components/schemas/contact-response-payload-single"
+          type: array
+        diff:
+          $ref: "#/components/schemas/contact-response-diff"
+          type: object
+      type: object
+    contact-response-payload-model:
+      additionalProperties: false
+      properties:
+        data:
+          additionalProperties: false
+          items:
+            $ref: "#/components/schemas/contact-response-payload-single"
+          type: array
+        error:
+          $ref: "#/components/schemas/contact-response-status"
+          type: object
+      type: object
+    contact-response-validation-error:
+      additionalProperties: false
+      properties:
+        field:
+          description: Represents field in which validation error occured
+          example: Type
+          type: string
+          nullable: true
+        message:
+          description: Represents validation error message
+          example: Json format or
+          type: string
+        code:
+          description: Represents validation error code
+          example: JsonFormat
+          type: string
+    contact-request-post:
+      additionalProperties: false
+      properties:
+        budgetUserId:
+          description: Budget User ID
+          example: 00001
+          type: string
+        budgetUserRequestId:
+          description: Budget User request ID
+          example: 1
+          nullable: true
+          type: integer
+        type:
+          description: Budget user contact type
+          example: 1
+          type: integer
+          enum:
+            - 1 (Registration)
+            - 2 (OrganizationalUnit)
+            - 3 (ResponsiblePerson)
+            - 4 (VerificationAdministrator)
+            - 5 (BankAccountAdministrator)
+            - 6 (Person)
+            - 7 (Organization)
+        name:
+          description: Name of the budget user contact
+          example: John Doe
+          type: string
+        identification:
+          additionalProperties: false
+          properties:
+            key:
+              description: Type of the identification document
+              example: MB
+              type: string
+              enum:
+                - MB (CompanyNumber)
+                - PIB (TaxIdNumber)
+                - JBKJS (BudgetUserId)
+                - LK (IdentificationNumber)
+                - JMBG (UniqueIdentificationNumber)
+                - Pasoš (PassportNumber)
+                - Drugo (Other)
+                - MB deo (CompanyNumberPart)
+            value:
+              description: Value of the identification document
+              example: "29857184"
+              type: string
+          type: object
+        place:
+          description: Budget user contact place of residence
+          example: Belgrade
+          type: string
+        postalNumber:
+          description: Budget user contact residence postal number
+          example: 11070
+          type: integer
+        street:
+          description: Budget user contact residence address
+          example: Belgrade street 1
+          type: string
+        website:
+          description: List of budget user contact websites
+          items:
+            properties:
+              value:
+                description: The value of the contact website.
+                type: string
+          example: "['www.test.com', 'www.anothertest.com']"
+          type: array
+        email:
+          description: List of budget user contact emails
+          items:
+            properties:
+              value:
+                description: The value of the contact website.
+                type: string
+          example: "['testcontact@jafin.rs', 'anothertestcontact@jafin.rs']"
+          type: array
+        phoneNumber:
+          description: List of budget user contact phone numbers
+          items:
+            properties:
+              value:
+                description: The value of the contact phone number.
+                type: string
+          example: "[123456789, 987654321]"
+          type: array
+        comment:
+          description: Budget user contact comment
+          nullable: true
+          example: Comment
+          type: string
+        activity:
+          description: Flag indicating budget user contact status
+          enum:
+            - 0 (Active)
+            - 3 (TemporarilyInactive)
+            - 9 (Inactive)
+          example: 0
+          type: integer
+        id:
+          description: Budget User contact ID
+          example: 1
+          type: integer
+      type: object
+    contact-request-put:
+      additionalProperties: false
+      properties:
+        budgetUserId:
+          description: Budget User ID
+          example: 00001
+          type: string
+        type:
+          description: Budget user contact type
+          example: 1
+          type: integer
+          enum:
+            - 1 (Registration)
+            - 2 (OrganizationalUnit)
+            - 3 (ResponsiblePerson)
+            - 4 (VerificationAdministrator)
+            - 5 (BankAccountAdministrator)
+            - 6 (Person)
+            - 7 (Organization)
+        name:
+          description: Name of the budget user contact
+          example: John Doe
+          type: string
+        identification:
+          additionalProperties: false
+          properties:
+            key:
+              description: Type of the identification document
+              example: MB
+              type: string
+              enum:
+                - MB (CompanyNumber)
+                - PIB (TaxIdNumber)
+                - JBKJS (BudgetUserId)
+                - LK (IdentificationNumber)
+                - JMBG (UniqueIdentificationNumber)
+                - Pasoš (PassportNumber)
+                - Drugo (Other)
+                - MB deo (CompanyNumberPart)
+            value:
+              description: Value of the identification document
+              example: "29857184"
+              type: string
+          type: object
+        place:
+          description: Budget user contact place of residence
+          example: Belgrade
+          type: string
+        postalNumber:
+          description: Budget user contact residence postal number
+          example: 11070
+          type: integer
+        street:
+          description: Budget user contact residence address
+          example: Belgrade street 1
+          type: string
+        website:
+          description: List of budget user contact websites
+          items:
+            properties:
+              value:
+                description: The value of the contact website.
+                type: string
+          example: "['www.test.com', 'www.anothertest.com']"
+          type: array
+        email:
+          description: List of budget user contact emails
+          items:
+            properties:
+              value:
+                description: The value of the contact website.
+                type: string
+          example: "['testcontact@jafin.rs', 'anothertestcontact@jafin.rs']"
+          type: array
+        phoneNumber:
+          description: List of budget user contact phone numbers
+          items:
+            properties:
+              value:
+                description: The value of the contact phone number.
+                type: string
+          example: "[123456789, 987654321]"
+          type: array
+        comment:
+          description: Budget user contact comment
+          nullable: true
+          example: Comment
+          type: string
+        activity:
+          description: Flag indicating budget user contact status
+          enum:
+            - 0 (Active)
+            - 3 (TemporarilyInactive)
+            - 9 (Inactive)
+          example: 0
+          type: integer
+        id:
+          description: Budget User contact ID
+          example: 1
+          type: integer
+      type: object
+    retrieve-single-get-response:
+      additionalProperties: false
+      properties:
+        status:
+          additionalProperties: false
+          $ref: "#/components/schemas/contact-response-status"
+        payload:
+          additionalProperties: false
+          $ref: "#/components/schemas/contact-response-payload-single"
+        additionalInformation:
+          additionalProperties: false
+          nullable: true
+          $ref: "#/components/schemas/contact-response-additional-information"
+      type: object
+    retrieve-filtered-get-response:
+      additionalProperties: false
+      properties:
+        status:
+          additionalProperties: false
+          $ref: "#/components/schemas/contact-response-status"
+        payload:
+          additionalProperties: false
+          items:
+            $ref: "#/components/schemas/contact-response-payload-collection"
+          type: array
+        additionalInformation:
+          additionalProperties: false
+          $ref: "#/components/schemas/contact-response-additional-information"
+      type: object
+    register-budget-user-contacts-post-response:
+      additionalProperties: false
+      properties:
+        status:
+          additionalProperties: false
+          $ref: "#/components/schemas/contact-response-status"
+        payload:
+          additionalProperties: false
+          $ref: "#/components/schemas/contact-response-payload-model"
+        additionalInformation:
+          additionalProperties: false
+          nullable: true
+          $ref: "#/components/schemas/contact-response-additional-information"
+    update-budget-user-contacts-put-response:
+      additionalProperties: false
+      properties:
+        status:
+          additionalProperties: false
+          $ref: "#/components/schemas/contact-response-status"
+        payload:
+          additionalProperties: false
+          $ref: "#/components/schemas/contact-response-payload-model"
+        additionalInformation:
+          additionalProperties: false
+          nullable: true
+          $ref: "#/components/schemas/contact-response-additional-information"
+      type: object
+    retrieve-paged-history-get-response:
+      additionalProperties: false
+      properties:
+        status:
+          additionalProperties: false
+          $ref: "#/components/schemas/contact-response-status"
+        payload:
+          additionalProperties: false
+          items:
+            $ref: "#/components/schemas/contact-response-payload-collection"
+          type: array
+        additionalInformation:
+          additionalProperties: false
+          nullable: true
+          $ref: "#/components/schemas/contact-response-additional-information"
+      type: object
+    retrieve-compared-history-get-response:
+      additionalProperties: false
+      properties:
+        status:
+          additionalProperties: false
+          $ref: "#/components/schemas/contact-response-status"
+        payload:
+          additionalProperties: false
+          $ref: "#/components/schemas/contact-response-payload-history"
+        additionalInformation:
+          additionalProperties: false
+          nullable: true
+          $ref: "#/components/schemas/contact-response-additional-information"
+      type: object
+    retrieve-paged-last-revision-history-get-response:
+      additionalProperties: false
+      properties:
+        status:
+          additionalProperties: false
+          $ref: "#/components/schemas/contact-response-status"
+        payload:
+          additionalProperties: false
+          $ref: "#/components/schemas/contact-response-payload-collection"
+        additionalInformation:
+          additionalProperties: false
+          nullable: true
+          $ref: "#/components/schemas/contact-response-additional-information"
+      type: object
+    retrieve-paged-versions-get-response:
+      additionalProperties: false
+      properties:
+        status:
+          additionalProperties: false
+          $ref: "#/components/schemas/contact-response-status"
+        payload:
+          additionalProperties: false
+          $ref: "#/components/schemas/contact-response-version"
+        additionalInformation:
+          additionalProperties: false
+          nullable: true
+          $ref: "#/components/schemas/contact-response-additional-information"
+      type: object
+    error:
+      additionalProperties: false
+      properties:
+        status:
+          additionalProperties: false
+          $ref: "#/components/schemas/contact-response-status"
+        additionalInformation:
+          additionalProperties: false
+          nullable: true
+          $ref: "#/components/schemas/contact-response-additional-information"
+      type: object
+    validation-error:
+      additionalProperties: false
+      properties:
+        status:
+          additionalProperties: false
+          $ref: "#/components/schemas/contact-response-status"
+        errors:
+          additionalProperties: false
+          items:
+            $ref: "#/components/schemas/contact-response-validation-error"
+          nullable: true
+          type: array
+      type: object
+  securitySchemes:
+    bearer_auth:
+      description: Budget User Contact API uses bearer token authentication.
+      scheme: bearer
+      type: http
+      bearerFormat: JWT
